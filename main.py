@@ -45,7 +45,10 @@ def cmd_tcpip(ip_src, ip_dst, reserved):
     layer4.reserved = num
     #    layer4.flags = "S"
     layer4.dataofs = 5
-    layer4.flags = 'S'
+    layer4.flags = 'SU'
+    layer4.window = 0b011
+    layer4.urgptr = 0b000111
+
 
     print("1")
     pkt = layer3 / layer4
@@ -99,6 +102,24 @@ reserved_bits_label.grid(row=4, column=2, sticky=W)
 reserved_bits_entry = Entry(app, textvariable=reserved_bits_text)
 reserved_bits_entry.grid(row=4, column=3)
 
+window_text = StringVar()
+window_label = Label(app, text='Window: ', font=('bold', 12), pady=10)
+window_label.grid(row=5, column=2, sticky=W)
+window_entry = Entry(app, textvariable=window_text)
+window_entry.grid(row=5, column=3)
+
+urgent_pointer_text = StringVar()
+urgent_pointer_label = Label(app, text='Urgent Pointer: ', font=('bold', 12), pady=10)
+urgent_pointer_label.grid(row=4, column=4, sticky=W)
+urgent_pointer_entry = Entry(app, textvariable=urgent_pointer_text)
+urgent_pointer_entry.grid(row=4, column=5)
+
+seq_TCP_text = StringVar()
+seq_TCP_label = Label(app, text='Seq Number: ', font=('bold', 12), pady=10)
+seq_TCP_label.grid(row=5, column=4, sticky=W)
+seq_TCP_entry = Entry(app, textvariable=seq_TCP_text)
+seq_TCP_entry.grid(row=5, column=5)
+
 
 def cmd():
     print(dst_text.get())
@@ -112,6 +133,8 @@ def cmd_TCP():
     print(dst_TCP_text.get())
     print(src_TCP_text.get())
     print(reserved_bits_text.get())
+    print(window_text.get())
+    print(urgent_pointer_text.get())
     cmd_tcpip(src_TCP_text.get(), dst_TCP_text.get(), reserved_bits_text.get())
 
 
@@ -120,11 +143,11 @@ icmp_steg_btn = Button(app, text='Send Ping', width=12, command=cmd, padx=10)
 icmp_steg_btn.grid(row=3, column=0)
 
 # buttons
-icmp_steg_btn = Button(app, text='Send Ping', width=12, command=cmd_TCP, padx=10)
+icmp_steg_btn = Button(app, text='Send TCP', width=12, command=cmd_TCP, padx=10)
 icmp_steg_btn.grid(row=6, column=0)
 
 app.title('Stego Tester')
-app.geometry('700x250')
+app.geometry('800x250')
 app.mainloop()
 # cmd_tcpip("192.168.1.104")
 # cmd_ping("192.168.1.104", 4, 128, 1, 0)
