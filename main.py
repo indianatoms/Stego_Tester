@@ -37,8 +37,8 @@ def cmd_tcpip(ip_src, ip_dst, reserved):
     layer3.ihl = 5
 
     layer4 = TCP()
-    layer4.dport = 80
-    layer4.sport = 20
+    layer4.dport = 12321
+    layer4.sport = 13211
     num = int(reserved, 2)
     binary_num = bin(num)
     print(binary_num)
@@ -120,7 +120,7 @@ icmp_steg_btn = Button(app, text='Send Ping', width=12, command=cmd, padx=10)
 icmp_steg_btn.grid(row=3, column=0)
 
 # buttons
-icmp_steg_btn = Button(app, text='Send Ping', width=12, command=cmd_TCP, padx=10)
+icmp_steg_btn = Button(app, text='Send TCP', width=12, command=cmd_TCP, padx=10)
 icmp_steg_btn.grid(row=6, column=0)
 
 app.title('Stego Tester')
