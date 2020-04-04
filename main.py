@@ -170,7 +170,7 @@ icmp_steg_btn = Button(app, text='Send TCP', width=12, command=cmd_TCP, padx=10)
 icmp_steg_btn.grid(row=6, column=0)
 
 app.title('Stego Tester')
-app.geometry('1200x250')
+app.geometry('1500x250')
 app.mainloop()
 # cmd_tcpip("192.168.1.104")
 # cmd_ping("192.168.1.104", 4, 128, 1, 0)
