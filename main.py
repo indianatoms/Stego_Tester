@@ -29,7 +29,7 @@ def cmd_ping(ip_dst, ip_src, seq, icmp_id):
     print("Ping Sent")
 
 
-def cmd_tcpip(ip_src, ip_dst, reserved):
+def cmd_tcpip(ip_src, ip_dst, reserved, seq_num, window, urg_ptr, flags, payload, src_port):
     layer3 = IP()
     layer3.src = ip_src
     layer3.dst = ip_dst
@@ -37,18 +37,24 @@ def cmd_tcpip(ip_src, ip_dst, reserved):
     layer3.ihl = 5
 
     layer4 = TCP()
-    layer4.dport = 12321
-    layer4.sport = 13211
+    layer4.dport = 80
+    layer4.sport = src_port
     num = int(reserved, 2)
     binary_num = bin(num)
     print(binary_num)
     layer4.reserved = num
     #    layer4.flags = "S"
     layer4.dataofs = 5
-    layer4.flags = 'S'
+    layer4.flags = flags
+    layer4.window = int(window, 2)
+    layer4.urgptr = int(urg_ptr, 2)
+    layer4.seq = int(seq_num, 2)
 
     print("1")
-    pkt = layer3 / layer4
+    if not(payload):
+        pkt = layer3 / layer4
+    else:
+        pkt = layer3 / layer4 / payload
     send(pkt)
 
 
@@ -99,6 +105,42 @@ reserved_bits_label.grid(row=4, column=2, sticky=W)
 reserved_bits_entry = Entry(app, textvariable=reserved_bits_text)
 reserved_bits_entry.grid(row=4, column=3)
 
+window_text = StringVar()
+window_label = Label(app, text='Window: ', font=('bold', 12), pady=10)
+window_label.grid(row=5, column=2, sticky=W)
+window_entry = Entry(app, textvariable=window_text)
+window_entry.grid(row=5, column=3)
+
+urgent_pointer_text = StringVar()
+urgent_pointer_label = Label(app, text='Urgent Pointer: ', font=('bold', 12), pady=10)
+urgent_pointer_label.grid(row=4, column=4, sticky=W)
+urgent_pointer_entry = Entry(app, textvariable=urgent_pointer_text)
+urgent_pointer_entry.grid(row=4, column=5)
+
+seq_TCP_text = StringVar()
+seq_TCP_label = Label(app, text='Seq Number: ', font=('bold', 12), pady=10)
+seq_TCP_label.grid(row=5, column=4, sticky=W)
+seq_TCP_entry = Entry(app, textvariable=seq_TCP_text)
+seq_TCP_entry.grid(row=5, column=5)
+
+flags_text = StringVar()
+flags_label = Label(app, text='Flags: ', font=('bold', 12), pady=10)
+flags_label.grid(row=4, column=6, sticky=W)
+flags_entry = Entry(app, textvariable=flags_text)
+flags_entry.grid(row=4, column=7)
+
+payload_text = StringVar()
+payload_label = Label(app, text='Payload: ', font=('bold', 12), pady=10)
+payload_label.grid(row=5, column=6, sticky=W)
+payload_entry = Entry(app, textvariable=payload_text)
+payload_entry.grid(row=5, column=7)
+
+sport_text = IntVar()
+sport_label = Label(app, text='Source Port: ', font=('bold', 12), pady=10)
+sport_label.grid(row=4, column=8, sticky=W)
+sport_entry = Entry(app, textvariable=sport_text)
+sport_entry.grid(row=4, column=9)
+
 
 def cmd():
     print(dst_text.get())
@@ -112,7 +154,11 @@ def cmd_TCP():
     print(dst_TCP_text.get())
     print(src_TCP_text.get())
     print(reserved_bits_text.get())
-    cmd_tcpip(src_TCP_text.get(), dst_TCP_text.get(), reserved_bits_text.get())
+    print(seq_TCP_text.get())
+    print(window_text.get())
+    print(urgent_pointer_text.get())
+    cmd_tcpip(src_TCP_text.get(), dst_TCP_text.get(), reserved_bits_text.get(), seq_TCP_text.get(), window_text.get(), urgent_pointer_text.get(), flags_text.get(),
+              payload_text.get(), sport_text.get())
 
 
 # buttons
@@ -124,7 +170,7 @@ icmp_steg_btn = Button(app, text='Send TCP', width=12, command=cmd_TCP, padx=10)
 icmp_steg_btn.grid(row=6, column=0)
 
 app.title('Stego Tester')
-app.geometry('700x250')
+app.geometry('1200x250')
 app.mainloop()
 # cmd_tcpip("192.168.1.104")
 # cmd_ping("192.168.1.104", 4, 128, 1, 0)
