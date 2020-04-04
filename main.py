@@ -29,7 +29,7 @@ def cmd_ping(ip_dst, ip_src, seq, icmp_id):
     print("Ping Sent")
 
 
-def cmd_tcpip(ip_src, ip_dst, reserved, seq_num, window, urg_ptr, flags, payload):
+def cmd_tcpip(ip_src, ip_dst, reserved, seq_num, window, urg_ptr, flags, payload, src_port):
     layer3 = IP()
     layer3.src = ip_src
     layer3.dst = ip_dst
@@ -38,7 +38,7 @@ def cmd_tcpip(ip_src, ip_dst, reserved, seq_num, window, urg_ptr, flags, payload
 
     layer4 = TCP()
     layer4.dport = 80
-    layer4.sport = 20
+    layer4.sport = src_port
     num = int(reserved, 2)
     binary_num = bin(num)
     print(binary_num)
@@ -135,6 +135,12 @@ payload_label.grid(row=5, column=6, sticky=W)
 payload_entry = Entry(app, textvariable=payload_text)
 payload_entry.grid(row=5, column=7)
 
+sport_text = IntVar()
+sport_label = Label(app, text='Source Port: ', font=('bold', 12), pady=10)
+sport_label.grid(row=4, column=8, sticky=W)
+sport_entry = Entry(app, textvariable=sport_text)
+sport_entry.grid(row=4, column=9)
+
 
 def cmd():
     print(dst_text.get())
@@ -152,7 +158,7 @@ def cmd_TCP():
     print(window_text.get())
     print(urgent_pointer_text.get())
     cmd_tcpip(src_TCP_text.get(), dst_TCP_text.get(), reserved_bits_text.get(), seq_TCP_text.get(), window_text.get(), urgent_pointer_text.get(), flags_text.get(),
-              payload_text.get())
+              payload_text.get(), sport_text.get())
 
 
 # buttons
@@ -164,7 +170,7 @@ icmp_steg_btn = Button(app, text='Send TCP', width=12, command=cmd_TCP, padx=10)
 icmp_steg_btn.grid(row=6, column=0)
 
 app.title('Stego Tester')
-app.geometry('950x250')
+app.geometry('1200x250')
 app.mainloop()
 # cmd_tcpip("192.168.1.104")
 # cmd_ping("192.168.1.104", 4, 128, 1, 0)
