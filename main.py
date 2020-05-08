@@ -30,7 +30,7 @@ def on_message(client, userdata, msg):
     print(msg.topic + " " + str(msg.payload))
 
 
-def mqtt_message(broker, id, user, psw, topic, payload):
+def mqtt_message(broker, id, user, psw, topic, payload, keepalive, retainval):
     client = mqtt.Client()
     client.on_connect = on_connect
     client.on_message = on_message
@@ -38,15 +38,15 @@ def mqtt_message(broker, id, user, psw, topic, payload):
     client.username_pw_set(user, password=psw)
     print("connecting to broker ", broker)
     client.connect(broker)
-    client.connect(broker, 1883, 60)
+    client.connect(broker, 1883, keepalive)
     client.loop_start()
-    client.publish(topic, payload)
+    client.publish(topic, payload, retain=retainval)
     client.loop_stop()
     client.disconnect();
 
 
-def mqtt_subscribe(ip, id, user, psw, topic):
-    client = mqtt.Client()
+def mqtt_subscribe(ip, id, user, psw, topic, clean):
+    client = mqtt.Client(clean_session=clean)
     client.on_connect = on_connect
     client.on_message = on_message
     broker = ip
@@ -100,9 +100,9 @@ def cmd_tcpip(ip_src, ip_dst, TOS, ttl, id, reserved, seq_num, window, urg_ptr, 
     layer4.reserved = num
     #    layer4.flags = "S"
     layer4.flags = flags
-    layer4.window = int(window, 2)
+    layer4.window = window
     layer4.urgptr = int(urg_ptr, 2)
-    layer4.seq = int(seq_num, 2)
+    layer4.seq = seq_num
 
     print("1")
     if not payload:
@@ -179,7 +179,7 @@ reserved_bits_label.grid(row=6, column=0, sticky=W)
 reserved_bits_entry = Entry(app, textvariable=reserved_bits_text)
 reserved_bits_entry.grid(row=6, column=1)
 
-window_text = StringVar()
+window_text = IntVar()
 window_label = Label(app, text='Window: ', font=('bold', 12), pady=10)
 window_label.grid(row=7, column=0, sticky=W)
 window_entry = Entry(app, textvariable=window_text)
@@ -191,7 +191,7 @@ urgent_pointer_label.grid(row=6, column=2, sticky=W)
 urgent_pointer_entry = Entry(app, textvariable=urgent_pointer_text)
 urgent_pointer_entry.grid(row=6, column=3)
 
-seq_TCP_text = StringVar()
+seq_TCP_text = IntVar()
 seq_TCP_label = Label(app, text='Seq Number: ', font=('bold', 12), pady=10)
 seq_TCP_label.grid(row=7, column=2, sticky=W)
 seq_TCP_entry = Entry(app, textvariable=seq_TCP_text)
@@ -263,6 +263,20 @@ payload_label.grid(row=11, column=2, sticky=W)
 payload_entry = Entry(app, textvariable=payload_text)
 payload_entry.grid(row=11, column=3)
 
+# topic2
+keepalive_text = IntVar()
+keepalive_label = Label(app, text='Keepalive: ', font=('bold', 12), pady=10)
+keepalive_label.grid(row=11, column=4, sticky=W)
+keepalive_entry = Entry(app, textvariable=keepalive_text)
+keepalive_entry.grid(row=11, column=5)
+
+retain = BooleanVar()
+retain_btn = Checkbutton(app, text="Retain", variable=retain, onvalue = True, offvalue = False,).grid(row=11, column=6)
+
+clean = BooleanVar()
+clean_btn = Checkbutton(app, text="Clean Session", variable=clean, onvalue = True, offvalue = False,).grid(row=10, column=2)
+
+
 
 def cmd():
     print(dst_text.get())
@@ -285,7 +299,7 @@ def cmd_TCP():
               payload_text.get(), sport_text.get())
 
 def cmd_mqtt_pub():
-    mqtt_message(broker_text.get(), ID_text.get(), user_text.get(), pass_text.get(), topic2_text.get(),payload_text.get())
+    mqtt_message(broker_text.get(), ID_text.get(), user_text.get(), pass_text.get(), topic2_text.get(),payload_text.get(),keepalive_text.get(),retain.get())
 
 
 def cmd_mqtt():
@@ -302,10 +316,10 @@ icmp_steg_btn.grid(row=8, column=0)
 
 #MQTT buttons
 mqtt_btn = Button(app, text='Subscribe', width=12, command=cmd_mqtt, padx=10)
-mqtt_btn.grid(row=10, column=2)
+mqtt_btn.grid(row=10, column=3)
 
 mqtt_btn = Button(app, text='Publish', width=12, command=cmd_mqtt_pub, padx=10)
-mqtt_btn.grid(row=11, column=4)
+mqtt_btn.grid(row=11, column=7)
 
 app.title('Stego Tester')
 app.geometry('1200x500')
