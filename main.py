@@ -46,11 +46,11 @@ def mqtt_message(broker, id, user, psw, topic, payload, keepalive, retainval):
 
 
 def mqtt_subscribe(ip, id, user, psw, topic, clean):
-    client = mqtt.Client(clean_session=clean)
+    print(clean)
+    client = mqtt.Client(client_id=id, clean_session=clean)
     client.on_connect = on_connect
     client.on_message = on_message
     broker = ip
-    client = mqtt.Client(id)
     client.username_pw_set(user, password=psw)
     print("connecting to broker ", broker)
     client.connect(broker)
@@ -304,7 +304,7 @@ def cmd_mqtt_pub():
 
 def cmd_mqtt():
     print("SUB top")
-    mqtt_subscribe(broker_text.get(), ID_text.get(), user_text.get(), pass_text.get(), topic_text.get())
+    mqtt_subscribe(broker_text.get(), ID_text.get(), user_text.get(), pass_text.get(), topic_text.get(),clean.get())
 
 # buttons
 icmp_steg_btn = Button(app, text='Send Ping', width=12, command=cmd, padx=10)
