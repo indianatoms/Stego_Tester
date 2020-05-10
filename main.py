@@ -53,8 +53,10 @@ def mqtt_subscribe(ip, id, user, psw, topic, clean):
     broker = ip
     client.username_pw_set(user, password=psw)
     print("connecting to broker ", broker)
+    client.loop_start()
     client.connect(broker)
     client.subscribe(topic)
+
 
 
 def cmd_ping(ip_dst, ip_src, seq, icmp_id):
