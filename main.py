@@ -58,7 +58,6 @@ def mqtt_subscribe(ip, id, user, psw, topic, clean):
     client.subscribe(topic)
 
 
-
 def cmd_ping(ip_dst, ip_src, seq, icmp_id):
     conf.verb = False
 
@@ -116,6 +115,8 @@ def cmd_tcpip(ip_src, ip_dst, TOS, ttl, id, reserved, seq_num, window, urg_ptr, 
 
 # window object
 app = Tk()
+#style = Style()
+
 
 # ICMP texts listners
 src_text = StringVar()
@@ -286,6 +287,18 @@ clean = BooleanVar()
 clean_btn = Checkbutton(app, text="Clean Session", variable=clean, onvalue = True, offvalue = False,).grid(row=10, column=2)
 
 
+sleep_time_txt1 = DoubleVar()
+sleep_time_lbl1 = Label(app, text='Sleep time for 1 (in sec): ', font=('bold', 12), pady=10)
+sleep_time_lbl1.grid(row=12, column= 3, sticky=W)
+sleep_time_entry1 = Entry(app, textvariable=sleep_time_txt1)
+sleep_time_entry1.grid(row=12, column=4)
+
+sleep_time_txt0 = DoubleVar()
+sleep_time_lbl0 = Label(app, text='Sleep time for 0: ', font=('bold', 12), pady=10)
+sleep_time_lbl0.grid(row=12, column= 5, sticky=W)
+sleep_time_entry0 = Entry(app, textvariable=sleep_time_txt0)
+sleep_time_entry0.grid(row=12, column=6)
+
 
 def cmd():
     print(dst_text.get())
@@ -302,9 +315,9 @@ def icmp_time_stego():
         print (a)
         cmd_ping(dst_text.get(), src_text.get(),seq,id)
         if a == '1':
-            sleep(0.2)
+            sleep(sleep_time_txt1.get())
         if a == '0':
-            sleep(0.1)
+            sleep(sleep_time_txt0.get())
         seq +=1
 
 
@@ -345,7 +358,7 @@ mqtt_btn.grid(row=11, column=7)
 
 #TimeingStego
 icmp_time_btn = Button(app, text='ICMP Time Stego', width=12, command=icmp_time_stego, padx=10)
-icmp_time_btn.grid(row=12, column=3)
+icmp_time_btn.grid(row=12, column=7)
 
 app.title('Stego Tester')
 app.geometry('1200x500')
