@@ -1,6 +1,6 @@
 from time import sleep
 import paho.mqtt.client as mqtt
-import time
+from time import sleep
 
 from pip._vendor.distlib.compat import raw_input
 from tkinter import *
@@ -272,6 +272,13 @@ keepalive_label.grid(row=11, column=4, sticky=W)
 keepalive_entry = Entry(app, textvariable=keepalive_text)
 keepalive_entry.grid(row=11, column=5)
 
+# topic2
+patern_text = StringVar()
+patern_label = Label(app, text='Message Pattern: ', font=('bold', 12), pady=10)
+patern_label.grid(row=12, column=0, sticky=W)
+patern_entry = Entry(app, textvariable=patern_text)
+patern_entry.grid(row=12, column=1)
+
 retain = BooleanVar()
 retain_btn = Checkbutton(app, text="Retain", variable=retain, onvalue = True, offvalue = False,).grid(row=11, column=6)
 
@@ -286,6 +293,19 @@ def cmd():
     print(seq_text.get())
     print(id_text.get())
     cmd_ping(dst_text.get(), src_text.get(), seq_text.get(), id_text.get())
+
+def icmp_time_stego():
+    patern = patern_text.get()
+    seq = seq_text.get()
+    id =  id_text.get()
+    for a in patern:
+        print (a)
+        cmd_ping(dst_text.get(), src_text.get(),seq,id)
+        if a == '1':
+            sleep(0.2)
+        if a == '0':
+            sleep(0.1)
+        seq +=1
 
 
 def cmd_TCP():
@@ -322,6 +342,10 @@ mqtt_btn.grid(row=10, column=3)
 
 mqtt_btn = Button(app, text='Publish', width=12, command=cmd_mqtt_pub, padx=10)
 mqtt_btn.grid(row=11, column=7)
+
+#TimeingStego
+icmp_time_btn = Button(app, text='ICMP Time Stego', width=12, command=icmp_time_stego, padx=10)
+icmp_time_btn.grid(row=12, column=3)
 
 app.title('Stego Tester')
 app.geometry('1200x500')
