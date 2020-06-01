@@ -37,7 +37,6 @@ def mqtt_message(broker, id, user, psw, topic, payload, keepalive, retainval):
     client = mqtt.Client(id)
     client.username_pw_set(user, password=psw)
     print("connecting to broker ", broker)
-    client.connect(broker)
     client.connect(broker, 1883, keepalive)
     client.loop_start()
     client.publish(topic, payload, retain=retainval)
@@ -46,7 +45,7 @@ def mqtt_message(broker, id, user, psw, topic, payload, keepalive, retainval):
 
 
 def mqtt_subscribe(ip, id, user, psw, topic, clean):
-    print(clean)
+    print(topic)
     client = mqtt.Client(client_id=id, clean_session=clean)
     client.on_connect = on_connect
     client.on_message = on_message
@@ -56,6 +55,9 @@ def mqtt_subscribe(ip, id, user, psw, topic, clean):
     client.loop_start()
     client.connect(broker)
     client.subscribe(topic)
+    client.loop_forever()
+
+
 
 
 def cmd_ping(ip_dst, ip_src, seq, icmp_id):
