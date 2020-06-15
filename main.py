@@ -1,13 +1,9 @@
-from time import sleep
+from telnetlib import IP
 import paho.mqtt.client as mqtt
 from time import sleep
-
-from pip._vendor.distlib.compat import raw_input
 from tkinter import *
-
 from scapy.all import *
-from scapy.layers.inet import ICMP, IP, TCP, sr1
-import random
+from scapy.layers.inet import ICMP, IP, TCP, UDP
 
 
 # The callback for when the client receives a CONNACK response from the server.
@@ -28,6 +24,24 @@ def on_log(client, userdata, level, buf):
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
     print(msg.topic + " " + str(msg.payload))
+
+def sip_message(ip_dst, ip_src, CallID, mf, contact):
+    sourcePort = 3001
+    destinationIp = ip_dst
+    sourceIp = ip_src
+    ip = IP(src=sourceIp, dst=destinationIp)
+    myPayload = (
+        'INVITE sip:{0}:5060;transport=tcp SIP/2.0\r\n'
+        'Via: SIP/2.0/UDP 192.168.44.32:5060;branch=1234\r\n'
+        'From: \"somedevice\"<sip:somedevice@1.1.1.1:5060>;tag=5678\r\n'
+        'To: <sip:{0}:5060>\r\n'
+        'Call-ID: '+ CallID +' \r\n'
+        'CSeq: 1 INVITE\r\n'
+        'Max-Forwards: '+ mf +'\r\n'
+        'Contact: <sip:'+ contact +'@pc33.atlanta.com>\r\n'
+        'Content-Length: 0\r\n\r\n').format(destinationIp)
+    udp = UDP(dport=5060, sport=sourcePort)
+    send(ip / udp / myPayload)
 
 
 def mqtt_message(broker, id, user, psw, topic, payload, keepalive, retainval):
@@ -301,6 +315,36 @@ sleep_time_lbl0.grid(row=12, column= 5, sticky=W)
 sleep_time_entry0 = Entry(app, textvariable=sleep_time_txt0)
 sleep_time_entry0.grid(row=12, column=6)
 
+#SIP STEGO
+sip_ip_text = StringVar()
+sip_ip_label = Label(app, text='Source IP: ', font=('bold', 12), pady=10)
+sip_ip_label.grid(row=13, column=0, sticky=W)
+sip_ip_entry = Entry(app, textvariable=sip_ip_text)
+sip_ip_entry.grid(row=13, column=1)
+
+sip_ipd_text = StringVar()
+sip_ipd_label = Label(app, text='Destination IP: ', font=('bold', 12), pady=10)
+sip_ipd_label.grid(row=13, column=2, sticky=W)
+sip_ipd_entry = Entry(app, textvariable=sip_ipd_text)
+sip_ipd_entry.grid(row=13, column=3)
+
+callid_text = StringVar()
+callid_label = Label(app, text='Call ID: ', font=('bold', 12), pady=10)
+callid_label.grid(row=13, column=4, sticky=W)
+callid_entry = Entry(app, textvariable=callid_text)
+callid_entry.grid(row=13, column=5)
+
+maxf_text = StringVar()
+maxf_label = Label(app, text='Max Forward: ', font=('bold', 12), pady=10)
+maxf_label.grid(row=13, column=6, sticky=W)
+maxf_entry = Entry(app, textvariable=maxf_text)
+maxf_entry.grid(row=13, column=7)
+
+contact_text = StringVar()
+contact_label = Label(app, text='Contact: ', font=('bold', 12), pady=10)
+contact_label.grid(row=14, column=0, sticky=W)
+contact_entry = Entry(app, textvariable=contact_text)
+contact_entry.grid(row=14, column=1)
 
 def cmd():
     print(dst_text.get())
@@ -343,6 +387,10 @@ def cmd_mqtt():
     print("SUB top")
     mqtt_subscribe(broker_text.get(), ID_text.get(), user_text.get(), pass_text.get(), topic_text.get(),clean.get())
 
+def cmd_sip():
+    print("sip")
+    sip_message(sip_ip_text.get(), sip_ipd_text.get() ,callid_text.get(), maxf_text.get(), contact_text.get())
+
 # buttons
 icmp_steg_btn = Button(app, text='Send Ping', width=12, command=cmd, padx=10)
 icmp_steg_btn.grid(row=3, column=0)
@@ -362,8 +410,11 @@ mqtt_btn.grid(row=11, column=7)
 icmp_time_btn = Button(app, text='ICMP Time Stego', width=12, command=icmp_time_stego, padx=10)
 icmp_time_btn.grid(row=12, column=7)
 
+icmp_time_btn = Button(app, text='Send SIP', width=12, command=cmd_sip, padx=10)
+icmp_time_btn.grid(row=14, column=2)
+
 app.title('Stego Tester')
-app.geometry('1200x500')
+app.geometry('1200x600')
 app.mainloop()
 # cmd_tcpip("192.168.1.104")
 # cmd_ping("192.168.1.104", 4, 128, 1, 0)
