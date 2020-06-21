@@ -72,8 +72,6 @@ def mqtt_subscribe(ip, id, user, psw, topic, clean):
     client.loop_forever()
 
 
-
-
 def cmd_ping(ip_dst, ip_src, seq, icmp_id):
     conf.verb = False
 
@@ -135,216 +133,231 @@ app = Tk()
 
 
 # ICMP texts listners
+icmp_label = Label(app, text='ICMP Packet: ', font=('bold', 14), pady=10)
+icmp_label.grid(row=0, column=0, sticky=W)
 src_text = StringVar()
 src_label = Label(app, text='Source IP: ', font=('bold', 12), pady=10)
-src_label.grid(row=0, column=0, sticky=W)
+src_label.grid(row=1, column=0, sticky=W)
 src_entry = Entry(app, textvariable=src_text)
-src_entry.grid(row=0, column=1)
+src_entry.grid(row=1, column=1)
 
 dst_text = StringVar()
 dst_label = Label(app, text='Destination IP: ', font=('bold', 12), pady=10)
-dst_label.grid(row=1, column=0, sticky=W)
+dst_label.grid(row=2, column=0, sticky=W)
 dst_entry = Entry(app, textvariable=dst_text)
-dst_entry.grid(row=1, column=1)
+dst_entry.grid(row=2, column=1)
 
 id_text = IntVar()
 id_label = Label(app, text='Ping ID: ', font=('bold', 12), pady=10)
-id_label.grid(row=0, column=2, sticky=W)
+id_label.grid(row=1, column=2, sticky=W)
 id_entry = Entry(app, textvariable=id_text)
-id_entry.grid(row=0, column=3)
+id_entry.grid(row=1, column=3)
 
 seq_text = IntVar()
 seq_label = Label(app, text='Ping Seq: ', font=('bold', 12), pady=10)
-seq_label.grid(row=1, column=2, sticky=W)
+seq_label.grid(row=2, column=2, sticky=W)
 seq_entry = Entry(app, textvariable=seq_text)
-seq_entry.grid(row=1, column=3)
+seq_entry.grid(row=2, column=3)
 
 # TCP texts listners
 # IP
+tcp_label = Label(app, text='TCP Packet: ', font=('bold', 14), pady=10)
+tcp_label.grid(row=4, column=0, sticky=W)
+
 src_TCP_text = StringVar()
 src_label = Label(app, text='Source IP: ', font=('bold', 12), pady=10)
-src_label.grid(row=4, column=0, sticky=W)
+src_label.grid(row=5, column=0, sticky=W)
 src_entry = Entry(app, textvariable=src_TCP_text)
-src_entry.grid(row=4, column=1)
+src_entry.grid(row=5, column=1)
 
 dst_TCP_text = StringVar()
 dst_label = Label(app, text='Destination IP: ', font=('bold', 12), pady=10)
-dst_label.grid(row=5, column=0, sticky=W)
+dst_label.grid(row=6, column=0, sticky=W)
 dst_entry = Entry(app, textvariable=dst_TCP_text)
-dst_entry.grid(row=5, column=1)
+dst_entry.grid(row=6, column=1)
 
 TOS_text = StringVar()
 TOS_label = Label(app, text='TOS: ', font=('bold', 12), pady=10)
-TOS_label.grid(row=4, column=2, sticky=W)
+TOS_label.grid(row=5, column=2, sticky=W)
 TOS_entry = Entry(app, textvariable=TOS_text)
-TOS_entry.grid(row=4, column=3)
+TOS_entry.grid(row=5, column=3)
 
 ttl_text = IntVar()
 ttl_label = Label(app, text='ttl: ', font=('bold', 12), pady=10)
-ttl_label.grid(row=5, column=2, sticky=W)
+ttl_label.grid(row=6, column=2, sticky=W)
 ttl_entry = Entry(app, textvariable=ttl_text)
-ttl_entry.grid(row=5, column=3)
+ttl_entry.grid(row=6, column=3)
 
 ip_id_text = IntVar()
 ip_id_label = Label(app, text='IP ID: ', font=('bold', 12), pady=10)
-ip_id_label.grid(row=5, column=4, sticky=W)
+ip_id_label.grid(row=6, column=4, sticky=W)
 ip_id_entry = Entry(app, textvariable=ip_id_text)
-ip_id_entry.grid(row=5, column=5)
+ip_id_entry.grid(row=6, column=5)
 
 # TCP
 reserved_bits_text = StringVar()
 reserved_bits_label = Label(app, text='Reserved Bits: ', font=('bold', 12), pady=10)
-reserved_bits_label.grid(row=6, column=0, sticky=W)
+reserved_bits_label.grid(row=7, column=0, sticky=W)
 reserved_bits_entry = Entry(app, textvariable=reserved_bits_text)
-reserved_bits_entry.grid(row=6, column=1)
+reserved_bits_entry.grid(row=7, column=1)
 
 window_text = IntVar()
 window_label = Label(app, text='Window: ', font=('bold', 12), pady=10)
-window_label.grid(row=7, column=0, sticky=W)
+window_label.grid(row=8, column=0, sticky=W)
 window_entry = Entry(app, textvariable=window_text)
-window_entry.grid(row=7, column=1)
+window_entry.grid(row=8, column=1)
 
 urgent_pointer_text = StringVar()
 urgent_pointer_label = Label(app, text='Urgent Pointer: ', font=('bold', 12), pady=10)
-urgent_pointer_label.grid(row=6, column=2, sticky=W)
+urgent_pointer_label.grid(row=7, column=2, sticky=W)
 urgent_pointer_entry = Entry(app, textvariable=urgent_pointer_text)
-urgent_pointer_entry.grid(row=6, column=3)
+urgent_pointer_entry.grid(row=7, column=3)
 
 seq_TCP_text = IntVar()
 seq_TCP_label = Label(app, text='Seq Number: ', font=('bold', 12), pady=10)
-seq_TCP_label.grid(row=7, column=2, sticky=W)
+seq_TCP_label.grid(row=8, column=2, sticky=W)
 seq_TCP_entry = Entry(app, textvariable=seq_TCP_text)
-seq_TCP_entry.grid(row=7, column=3)
+seq_TCP_entry.grid(row=8, column=3)
 
 flags_text = StringVar()
 flags_label = Label(app, text='Flags: ', font=('bold', 12), pady=10)
-flags_label.grid(row=6, column=4, sticky=W)
+flags_label.grid(row=7, column=4, sticky=W)
 flags_entry = Entry(app, textvariable=flags_text)
-flags_entry.grid(row=6, column=5)
+flags_entry.grid(row=7, column=5)
 
 payload_text = StringVar()
 payload_label = Label(app, text='Payload: ', font=('bold', 12), pady=10)
-payload_label.grid(row=7, column=4, sticky=W)
+payload_label.grid(row=8, column=4, sticky=W)
 payload_entry = Entry(app, textvariable=payload_text)
-payload_entry.grid(row=7, column=5)
+payload_entry.grid(row=8, column=5)
 
 sport_text = IntVar()
 sport_label = Label(app, text='Source Port: ', font=('bold', 12), pady=10)
-sport_label.grid(row=6, column=6, sticky=W)
+sport_label.grid(row=7, column=6, sticky=W)
 sport_entry = Entry(app, textvariable=sport_text)
-sport_entry.grid(row=6, column=7)
+sport_entry.grid(row=7, column=7)
+
 
 ##MQTT Broker
+mqtt_label = Label(app, text='MQTT Packet: ', font=('bold', 14), pady=10)
+mqtt_label.grid(row=10, column=0, sticky=W)
+
 broker_text = StringVar()
 broker_label = Label(app, text='Broker IP: ', font=('bold', 12), pady=10)
-broker_label.grid(row=9, column=0, sticky=W)
+broker_label.grid(row=11, column=0, sticky=W)
 broker_entry = Entry(app, textvariable=broker_text)
-broker_entry.grid(row=9, column=1)
+broker_entry.grid(row=11, column=1)
 # ID
 ID_text = StringVar()
 ID_label = Label(app, text='Client ID: ', font=('bold', 12), pady=10)
-ID_label.grid(row=9, column=2, sticky=W)
+ID_label.grid(row=11, column=2, sticky=W)
 ID_entry = Entry(app, textvariable=ID_text)
-ID_entry.grid(row=9, column=3)
+ID_entry.grid(row=11, column=3)
 
 # user
 user_text = StringVar()
 user_label = Label(app, text='User: ', font=('bold', 12), pady=10)
-user_label.grid(row=9, column=4, sticky=W)
+user_label.grid(row=11, column=4, sticky=W)
 user_entry = Entry(app, textvariable=user_text)
-user_entry.grid(row=9, column=5)
+user_entry.grid(row=11, column=5)
 
 # password
 pass_text = StringVar()
 pass_label = Label(app, text='Password: ', font=('bold', 12), pady=10)
-pass_label.grid(row=9, column=6, sticky=W)
+pass_label.grid(row=11, column=6, sticky=W)
 pass_entry = Entry(app, textvariable=pass_text)
-pass_entry.grid(row=9, column=7)
+pass_entry.grid(row=11, column=7)
 
 # topic
 topic_text = StringVar()
 topic_label = Label(app, text='Topic: ', font=('bold', 12), pady=10)
-topic_label.grid(row=10, column=0, sticky=W)
+topic_label.grid(row=12, column=0, sticky=W)
 topic_entry = Entry(app, textvariable=topic_text)
-topic_entry.grid(row=10, column=1)
+topic_entry.grid(row=12, column=1)
 
 # topic2
 topic2_text = StringVar()
 topic2_label = Label(app, text='Topic: ', font=('bold', 12), pady=10)
-topic2_label.grid(row=11, column=0, sticky=W)
+topic2_label.grid(row=13, column=0, sticky=W)
 topic2_entry = Entry(app, textvariable=topic2_text)
-topic2_entry.grid(row=11, column=1)
+topic2_entry.grid(row=13, column=1)
 
 # topic2
 payload_text = StringVar()
 payload_label = Label(app, text='Payload: ', font=('bold', 12), pady=10)
-payload_label.grid(row=11, column=2, sticky=W)
+payload_label.grid(row=13, column=2, sticky=W)
 payload_entry = Entry(app, textvariable=payload_text)
-payload_entry.grid(row=11, column=3)
+payload_entry.grid(row=13, column=3)
 
 # topic2
 keepalive_text = IntVar()
 keepalive_label = Label(app, text='Keepalive: ', font=('bold', 12), pady=10)
-keepalive_label.grid(row=11, column=4, sticky=W)
+keepalive_label.grid(row=13, column=4, sticky=W)
 keepalive_entry = Entry(app, textvariable=keepalive_text)
-keepalive_entry.grid(row=11, column=5)
+keepalive_entry.grid(row=13, column=5)
 
 # topic2
 patern_text = StringVar()
 patern_label = Label(app, text='Message Pattern: ', font=('bold', 12), pady=10)
-patern_label.grid(row=12, column=0, sticky=W)
+patern_label.grid(row=15, column=4, sticky=W)
 patern_entry = Entry(app, textvariable=patern_text)
-patern_entry.grid(row=12, column=1)
+patern_entry.grid(row=15, column=5)
 
 retain = BooleanVar()
-retain_btn = Checkbutton(app, text="Retain", variable=retain, onvalue = True, offvalue = False,).grid(row=11, column=6)
+retain_btn = Checkbutton(app, text="Retain", variable=retain, onvalue = True, offvalue = False,).grid(row=13, column=6)
 
 clean = BooleanVar()
-clean_btn = Checkbutton(app, text="Clean Session", variable=clean, onvalue = True, offvalue = False,).grid(row=10, column=2)
+clean_btn = Checkbutton(app, text="Clean Session", variable=clean, onvalue = True, offvalue = False,).grid(row=12, column=2)
 
+
+iat = Label(app, text='Inter Arrival ICMP Time: ', font=('bold', 14), pady=10)
+iat.grid(row=14, column= 0, sticky=W)
 
 sleep_time_txt1 = DoubleVar()
 sleep_time_lbl1 = Label(app, text='Sleep time for 1 (in sec): ', font=('bold', 12), pady=10)
-sleep_time_lbl1.grid(row=12, column= 3, sticky=W)
+sleep_time_lbl1.grid(row=15, column= 0, sticky=W)
 sleep_time_entry1 = Entry(app, textvariable=sleep_time_txt1)
-sleep_time_entry1.grid(row=12, column=4)
+sleep_time_entry1.grid(row=15, column=1)
 
 sleep_time_txt0 = DoubleVar()
 sleep_time_lbl0 = Label(app, text='Sleep time for 0: ', font=('bold', 12), pady=10)
-sleep_time_lbl0.grid(row=12, column= 5, sticky=W)
+sleep_time_lbl0.grid(row=15, column= 2, sticky=W)
 sleep_time_entry0 = Entry(app, textvariable=sleep_time_txt0)
-sleep_time_entry0.grid(row=12, column=6)
+sleep_time_entry0.grid(row=15, column=3)
 
 #SIP STEGO
+sip_label = Label(app, text='SIP Packet: ', font=('bold', 14), pady=10)
+sip_label.grid(row=16, column=0, sticky=W)
+
 sip_ip_text = StringVar()
 sip_ip_label = Label(app, text='Source IP: ', font=('bold', 12), pady=10)
-sip_ip_label.grid(row=13, column=0, sticky=W)
+sip_ip_label.grid(row=17, column=0, sticky=W)
 sip_ip_entry = Entry(app, textvariable=sip_ip_text)
-sip_ip_entry.grid(row=13, column=1)
+sip_ip_entry.grid(row=17, column=1)
 
 sip_ipd_text = StringVar()
 sip_ipd_label = Label(app, text='Destination IP: ', font=('bold', 12), pady=10)
-sip_ipd_label.grid(row=13, column=2, sticky=W)
+sip_ipd_label.grid(row=17, column=2, sticky=W)
 sip_ipd_entry = Entry(app, textvariable=sip_ipd_text)
-sip_ipd_entry.grid(row=13, column=3)
+sip_ipd_entry.grid(row=17, column=3)
 
 callid_text = StringVar()
 callid_label = Label(app, text='Call ID: ', font=('bold', 12), pady=10)
-callid_label.grid(row=13, column=4, sticky=W)
+callid_label.grid(row=17, column=4, sticky=W)
 callid_entry = Entry(app, textvariable=callid_text)
-callid_entry.grid(row=13, column=5)
+callid_entry.grid(row=17, column=5)
 
 maxf_text = StringVar()
 maxf_label = Label(app, text='Max Forward: ', font=('bold', 12), pady=10)
-maxf_label.grid(row=13, column=6, sticky=W)
+maxf_label.grid(row=17, column=6, sticky=W)
 maxf_entry = Entry(app, textvariable=maxf_text)
-maxf_entry.grid(row=13, column=7)
+maxf_entry.grid(row=17, column=7)
 
 contact_text = StringVar()
 contact_label = Label(app, text='Contact: ', font=('bold', 12), pady=10)
-contact_label.grid(row=14, column=0, sticky=W)
+contact_label.grid(row=18, column=0, sticky=W)
 contact_entry = Entry(app, textvariable=contact_text)
-contact_entry.grid(row=14, column=1)
+contact_entry.grid(row=18, column=1)
 
 def cmd():
     print(dst_text.get())
@@ -396,25 +409,25 @@ icmp_steg_btn = Button(app, text='Send Ping', width=12, command=cmd, padx=10)
 icmp_steg_btn.grid(row=3, column=0)
 
 # buttons
-icmp_steg_btn = Button(app, text='Send TCP/IP', width=12, command=cmd_TCP, padx=10)
-icmp_steg_btn.grid(row=8, column=0)
+tcp_steg_btn = Button(app, text='Send TCP/IP', width=12, command=cmd_TCP, padx=10)
+tcp_steg_btn.grid(row=9, column=0)
 
 #MQTT buttons
 mqtt_btn = Button(app, text='Subscribe', width=12, command=cmd_mqtt, padx=10)
-mqtt_btn.grid(row=10, column=3)
+mqtt_btn.grid(row=12, column=3)
 
 mqtt_btn = Button(app, text='Publish', width=12, command=cmd_mqtt_pub, padx=10)
-mqtt_btn.grid(row=11, column=7)
+mqtt_btn.grid(row=13, column=7)
 
 #TimeingStego
 icmp_time_btn = Button(app, text='ICMP Time Stego', width=12, command=icmp_time_stego, padx=10)
-icmp_time_btn.grid(row=12, column=7)
+icmp_time_btn.grid(row=15, column=7)
 
-icmp_time_btn = Button(app, text='Send SIP', width=12, command=cmd_sip, padx=10)
-icmp_time_btn.grid(row=14, column=2)
+sip_btn = Button(app, text='Send SIP', width=12, command=cmd_sip, padx=10)
+sip_btn.grid(row=18, column=2)
 
 app.title('Stego Tester')
-app.geometry('1200x600')
+app.geometry('1200x800')
 app.mainloop()
 # cmd_tcpip("192.168.1.104")
 # cmd_ping("192.168.1.104", 4, 128, 1, 0)
