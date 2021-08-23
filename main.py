@@ -51,11 +51,12 @@ def mqtt_message(broker, id, user, psw, topic, payload, keepalive, retainval):
     client = mqtt.Client(id)
     client.username_pw_set(user, password=psw)
     print("connecting to broker ", broker)
+    sleep(10)
     client.connect(broker, 1883, keepalive)
     client.loop_start()
     client.publish(topic, payload, retain=retainval)
     client.loop_stop()
-    client.disconnect();
+    client.disconnect()
 
 
 def mqtt_subscribe(ip, id, user, psw, topic, clean):
